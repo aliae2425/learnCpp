@@ -2,10 +2,25 @@
 #include <conio.h> // Pour _getch()
 #include <chrono>
 #include <vector>
+#include <windows.h>
+
+void afficherTour(int numero, double temps) {
+    std::cout << "Tour " << numero << " : " << temps << " secondes." << std::endl;
+}
+
+void afficherCodeTouche(int key, int key2 = -1) {
+    std::cout << "Code touche : " << key;
+    if (key2 != -1) std::cout << ", code spécial : " << key2;
+    std::cout << std::endl;
+}
+
+void attendreRelachementShift() {
+    // Attend que la touche Shift soit relâchée pour éviter plusieurs tours d'affilée
+    while (GetAsyncKeyState(VK_SHIFT) & 0x8000) {}
+}
 
 int main() {
     std::cout << "Appuyez sur ESPACE pour démarrer le chronomètre..." << std::endl;
-    // Attendre la première pression sur espace
     while (_getch() != ' ') {}
 
     std::cout << "Chronomètre démarré !\nAppuyez sur SHIFT pour enregistrer un tour.\nAppuyez sur ESPACE pour arrêter." << std::endl;
@@ -15,22 +30,21 @@ int main() {
     int lap_count = 0;
 
     while (true) {
-        int key = _getch();
-        // SHIFT = touche spéciale, _getch() retourne 0 ou 224, puis le code touche
-        if (key == ' ') {
+        // Arrêt avec espace
+        if (GetAsyncKeyState(VK_SPACE) & 0x8000) {
             break;
-        } else if (key == 0 || key == 224) {
-            int key2 = _getch();
-            // 42 = gauche, 54 = droite (SHIFT gauche/droite)
-            if (key2 == 42 || key2 == 54) {
-                auto now = std::chrono::high_resolution_clock::now();
-                std::chrono::duration<double> lap = now - last_lap;
-                laps.push_back(lap.count());
-                last_lap = now;
-                lap_count++;
-                std::cout << "Tour " << lap_count << " : " << lap.count() << " secondes." << std::endl;
-            }
         }
+        // Compte tour avec Shift
+        if (GetAsyncKeyState(VK_SHIFT) & 0x8000) {
+            auto now = std::chrono::high_resolution_clock::now();
+            std::chrono::duration<double> lap = now - last_lap;
+            laps.push_back(lap.count());
+            last_lap = now;
+            lap_count++;
+            afficherTour(lap_count, lap.count());
+            attendreRelachementShift();
+        }
+        Sleep(10); // Petite pause pour éviter de surcharger le CPU
     }
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> elapsed = end - start;
