@@ -1,8 +1,0 @@
-{
-    "files.associations": {
-        "*.embeddedhtml": "html",
-        "*.twig": "twig",
-        "ostream": "cpp",
-        "iostream": "cpp"
-    }
-}
