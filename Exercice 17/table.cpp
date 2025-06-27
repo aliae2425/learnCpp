@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <string>
 #include <iomanip>
 #include <cstdlib>
 #include <ctime>
@@ -14,15 +15,14 @@ std::vector<int> createTable(int size) {
 }
 
 // void displayTable(const std::vector<int>& table) {
-void displayTable(std::vector<int> &table) {
-    std::cout << "index |";
+void displayTable(std::vector<int> &table,const std::string title = "Index") {
+    std::cout << std::setw(10)<< title  << " |" << std::endl;
     for (size_t i = 0; i < table.size(); ++i) {
-        std::cout << std::setw(4) << i + 1 << " |";
-    }
-    std::cout << std::endl;
-    std::cout << "value |";
-    for (size_t i = 0; i < table.size(); ++i) {
+        if (title == "Index") {
+            std::cout << std::setw(4) << i + 1 << " |";
+        } else {
         std::cout << std::setw(4) << table[i] << " |";
+        }
     }
     std::cout << std::endl;
 }
@@ -33,6 +33,16 @@ int average(const std::vector<int>& table) {
         sum += value;
     }
     return sum / table.size();
+}
+
+void sortTable(std::vector<int>& table) {
+    for (int i = 0; i < table.size() - 1; ++i) {
+        for (int j = 0; j < table.size() - i - 1; ++j) {
+            if (table[j] > table[j + 1]) {
+                std::swap(table[j], table[j + 1]);
+            }
+        }
+    }
 }
 
 int main(){
@@ -50,8 +60,11 @@ int main(){
 
     std::vector<int> table = createTable(tableSize);
     displayTable(table);
+    displayTable(table, "Valeurs");
+    sortTable(table);
+    displayTable(table, "triées");
 
-    std::cout <<std::endl << std::endl << "La moyenne de la table est: " << average(table) << std::endl;
+    std::cout <<std::endl << "La moyenne de la table est: " << average(table) << std::endl;
 
     return 0;
 }
