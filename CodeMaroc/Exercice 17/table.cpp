@@ -85,6 +85,22 @@ void countOccurrences(const std::vector<int>& table) {
 
 }
 
+void countOddAndEven(const std::vector<int>& table) {
+    int oddCount = 0;
+    int evenCount = 0;
+
+    for (int value : table) {
+        if (value % 2 == 0) {
+            evenCount++;
+        } else {
+            oddCount++;
+        }
+    }
+
+    std::cout << "Nombre de valeurs paires: " << evenCount << std::endl;
+    std::cout << "Nombre de valeurs impaires: " << oddCount << std::endl;
+}
+
 int main(){
     // Initialiser la seed pour les nombres aléatoires
     srand(time(nullptr));
@@ -106,6 +122,8 @@ int main(){
 
     std::cout <<std::endl << "La moyenne de la table est: " << average(table) << std::endl;
     countOccurrences(table);
+    std::cout << std::endl;
+    countOddAndEven(table);
 
     return 0;
 }
