@@ -16,14 +16,6 @@ int calculerU(int n) {
     return u;
 }
 
-// Fonction récursive alternative
-int calculerURecursif(int n) {
-    if (n == 0) {
-        return 3;  // Cas de base : u(0) = 3
-    }
-    return 3 * calculerURecursif(n - 1) + 4;  // u(n) = 3*u(n-1) + 4
-}
-
 // Fonction pour afficher la suite jusqu'à N
 void afficherSuite(int n) {
     std::cout << "\nSuite u(n) pour n de 0 à " << n << ":" << std::endl;
