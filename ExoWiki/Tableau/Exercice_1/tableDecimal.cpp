@@ -3,10 +3,21 @@
 #include <string>
 #include <iomanip>
 
+#ifdef _WIN32
+    #include <windows.h>
+    #include <io.h>
+    #include <fcntl.h>
+#endif
+
+
+const std::string VERT = "\033[32m";
+const std::string RESET = "\033[0m";
+const std::string ROUGE = "\033[31m";
+
 void printtable(std::vector<int> &table) {
     std::cout << "Tableau: ";
     for (size_t i = 0; i < table.size(); ++i) {
-        std::cout << std::setw(3) << table[i];
+        std::cout << (table[i]>=10? VERT: ROUGE) << std::setw(3) << table[i] << RESET;
         if (i < table.size() - 1) {
             std::cout << " | ";
         }
@@ -14,7 +25,23 @@ void printtable(std::vector<int> &table) {
     std::cout << std::endl;
 }
 
+int countDecimal(std::vector<int> &table) {
+    int count = 0;
+    for (int num : table) {
+        if (num >= 10) {
+            count++;
+        }
+    }
+    return count;
+}
+
 int main(){
+
+    #ifdef _WIN32
+        SetConsoleOutputCP(CP_UTF8);
+        SetConsoleCP(CP_UTF8);
+    #endif
+
     bool continuer = true;
     std::vector<int> table;
     std::string input = "0";
@@ -46,8 +73,9 @@ int main(){
         /* code */
     }
 
-    std::cout << "Programme terminé." << std::endl;
+    std::cout << "✅ Programme terminé." << std::endl;
     printtable(table); // Afficher le tableau final
+    std::cout << "Nombre de valeurs décimales (>= 10): " << countDecimal(table) << std::endl;
     return 0;    
     
 }
