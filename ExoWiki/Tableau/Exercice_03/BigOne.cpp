@@ -1,0 +1,104 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <iomanip>
+
+#ifdef _WIN32
+    #include <windows.h>
+    #include <io.h>
+    #include <fcntl.h>
+#endif
+
+
+const std::string VERT = "\033[32m";
+const std::string RESET = "\033[0m";
+const std::string ROUGE = "\033[31m";
+
+void printTable(std::vector<int> &table, int id = 0) {
+    std::cout << std::setw(15) << "index: ";
+    for (size_t i = 0; i < table.size(); ++i) {
+        std::cout << std::setw(3) << i;
+        if (i < table.size() - 1) {
+            std::cout << " | ";
+        }
+    }
+    std::cout << std::endl;
+    std::cout << std::setw(15) << "Tableau: ";
+    for (size_t i = 0; i < table.size(); ++i) {
+        std::cout << (i == id? VERT: RESET) << std::setw(3) << table[i] << RESET;
+        if (i < table.size() - 1) {
+            std::cout << " | ";
+        }
+    }
+    std::cout << std::endl << std::endl;
+}
+
+int BigerValue(std::vector<int> &table) {
+    int id = 0;
+    int maxValue = -1;
+    for (size_t i = 0; i < table.size(); ++i) {
+        if (table[i] > maxValue) {
+            maxValue = table[i];
+            id = i;
+        }
+    }
+    return id;
+}
+
+int main(){
+
+    #ifdef _WIN32
+        SetConsoleOutputCP(CP_UTF8);
+        SetConsoleCP(CP_UTF8);
+    #endif
+
+    srand(time(nullptr));
+
+    bool continuer = true;
+    int value = 0;
+
+    std::vector<int> table;
+    std::string input = "0";
+
+    std::cout << "Entrez un nombre entier (ou 'q' pour quitter): ";
+
+    while (continuer)
+    {
+        std::cin >> input;
+
+        if (input == "q" || input == "Q") {
+            continuer = false;
+        }
+        else if (input == "rand"){
+            for (int i = 0; i < 10; ++i) {
+                int nombre = rand() % 100; // Générer un nombre aléatoire entre 0 et 99
+                table.push_back(nombre);
+            }
+            break; // Sortir de la boucle pour éviter de demander à nouveau une entrée
+        }
+         else {
+            try {
+                int nombre = std::stoi(input);
+                table.push_back(nombre);
+            } catch (const std::invalid_argument &e) {
+                std::cout << "Entrée invalide, veuillez entrer un nombre entier." << std::endl;
+            } catch (const std::out_of_range &e) {
+                std::cout << "Nombre hors de portée." << std::endl;
+            }
+        }
+
+        if (table.size() >= 10) {
+            std::cout << "Le tableau a atteint sa taille maximale de 10 éléments." << std::endl;
+            continuer = false; // Arrêter la boucle si le tableau est plein
+        }
+    }
+
+    std::cout << "la valeur la plus grande est: " << table[BigerValue(table)] << std::endl;
+    std::cout << "la position de la valeur la plus grande est: " << BigerValue(table) << std::endl;
+    std::cout << "Tableau avec la valeur la plus grande en vert: " << std::endl;
+    printTable(table, BigerValue(table)); // Afficher le tableau final
+    
+    std::cout << "✅ Programme terminé." << std::endl;
+    
+    return 0;    
+}
