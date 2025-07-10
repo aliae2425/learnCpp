@@ -1,7 +1,7 @@
 {
     "files.associations": {
-        "*.embeddedhtml": "html",
         "*.twig": "twig",
+        "*.embeddedhtml": "html",
         "cstdlib": "cpp",
         "iostream": "cpp",
         "iomanip": "cpp",
@@ -59,6 +59,7 @@
         "xmemory": "cpp",
         "xstring": "cpp",
         "xtr1common": "cpp",
-        "xutility": "cpp"
+        "xutility": "cpp",
+        "numeric": "cpp"
     }
 }
