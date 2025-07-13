@@ -16,23 +16,29 @@ const std::string RESET = "\033[0m";
 const std::string ROUGE = "\033[31m";
 
 
-void printTable(std::vector<int> &table) {
-    std::cout << std::setw(15) << "index: ";
-    for (size_t i = 0; i < table.size(); ++i) {
+void printTable(std::vector<int> &table, const std::string &title = "Index"){
+
+    std::cout << std::setw(20) << title << " : ";
+    if (title == "Index") {
+        for (size_t i = 0; i < table.size(); ++i) {
         std::cout << std::setw(3) << i;
         if (i < table.size() - 1) {
             std::cout << " | ";
         }
     }
-    std::cout << std::endl;
-    std::cout << std::setw(15) << "Tableau: ";
-    for (size_t i = 0; i < table.size(); ++i) {
-        std::cout << std::setw(3) << table[i];
-        if (i < table.size() - 1) {
-            std::cout << " | ";
+    } else {
+        for (size_t i = 0; i < table.size(); ++i) {
+            std::cout << std::setw(3) << table[i];
+            if (i < table.size() - 1) {
+                std::cout << " | ";
+            }
         }
     }
-    std::cout << std::endl << std::endl;
+    std::cout << std::endl;
+}
+
+void triTable(std::vector<int> &table) {
+    std::sort(table.begin(), table.end());
 }
 
 int main(){
@@ -62,7 +68,7 @@ int main(){
         }
         else if (input == "rand"){
             for (int i = 0; i < 10; ++i) {
-                int nombre = rand() % 10; // Générer un nombre aléatoire entre 0 et 99
+                int nombre = rand() % 100; // Générer un nombre aléatoire entre 0 et 99
                 table.push_back(nombre);
             }
             break; // Sortir de la boucle pour éviter de demander à nouveau une entrée
@@ -85,12 +91,11 @@ int main(){
     }
 
     std::cout << "Tableau initial: " << std::endl;
-    printTable(table);
-    std::cout << std::endl << std::endl;
-    typeOfTable(table);    
-
-    std::cout << "Affichage graphique:" << std::endl;
-    afficherGraphiqueBarres(table);
+    printTable(table,"Index");
+    printTable(table,"Valeurs");
+    std::cout << "Tri du tableau..." << std::endl;
+    triTable(table);
+    printTable(table,"Tableau trié");
 
     std::cout << "✅ Programme terminé." << std::endl;
     return 0;    
