@@ -99,10 +99,10 @@ int main(){
 
 
     std::cout << "Tableau initial A: " << std::endl;
-    printTable(table_A, "index");
+    printTable(table_A);
     printTable(table_A,"Valeurs");
     std::cout << "Tableau initial B: " << std::endl;
-    printTable(table_B, "index");
+    printTable(table_B);
     printTable(table_B,"Valeurs");
 
     std::cout << "Fusion des tableaux A et B dans C..." << std::endl;
@@ -110,7 +110,7 @@ int main(){
     table_C.insert(table_C.end(), table_A.begin(), table_A.end());
     table_C.insert(table_C.end(), table_B.begin(), table_B.end());
     std::cout << "Tableau C après fusion: " << std::endl;
-    printTable(table_C, "index");
+    printTable(table_C);
     printTable(table_C,"Valeurs");
 
     std::cout << "✅ Programme terminé." << std::endl;
